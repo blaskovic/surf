@@ -1,0 +1,5 @@
+surf-open.sh
+sleep 1
+surf-open.sh "https://mail.google.com"
+surf-open.sh "https://www.google.com/calendar"
+surf-open.sh "https://keep.google.com"

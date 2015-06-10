@@ -47,6 +47,10 @@ install: all
 	@mkdir -p ${DESTDIR}${PREFIX}/bin
 	@cp -f surf ${DESTDIR}${PREFIX}/bin
 	@chmod 755 ${DESTDIR}${PREFIX}/bin/surf
+	@cp -f scripts/surf-open.sh ${DESTDIR}${PREFIX}/bin
+	@chmod 755 ${DESTDIR}${PREFIX}/bin/surf-open.sh
+	@cp -f scripts/surf-main ${DESTDIR}${PREFIX}/bin
+	@chmod 755 ${DESTDIR}${PREFIX}/bin/surf-main
 	@echo installing manual page to ${DESTDIR}${MANPREFIX}/man1
 	@mkdir -p ${DESTDIR}${MANPREFIX}/man1
 	@sed "s/VERSION/${VERSION}/g" < surf.1 > ${DESTDIR}${MANPREFIX}/man1/surf.1
