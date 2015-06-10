@@ -37,7 +37,8 @@ static Bool allowgeolocation      = TRUE;
 
 #define SETPROP(p, q) { \
 	.v = (char *[]){ "/bin/sh", "-c", \
-		"prop=\"`xprop -id $2 $0 | cut -d '\"' -f 2 | xargs -0 printf %b | dmenu`\" &&" \
+		"prop=\"`(xprop -id $2 $0 | cut -d '\"' -f 2 | xargs -0 printf %b && "\
+                "cat ~/.surf/bookmarks) | dmenu`\" &&" \
 		"xprop -id $2 -f $1 8s -set $1 \"$prop\"", \
 		p, q, winid, NULL \
 	} \
@@ -72,6 +73,12 @@ static SiteStyle styles[] = {
 	/* regexp		file in $styledir */
 	{ ".*",			"default.css" },
 };
+
+#define BM_ADD { .v = (char *[]){ "/bin/sh", "-c", \
+  "(echo `xprop -id $0 _SURF_URI | cut -d '\"' -f 2` && "\
+  "cat ~/.surf/bookmarks) | awk '!seen[$0]++' > ~/.surf/bookmarks_new && "\
+  "mv ~/.surf/bookmarks_new ~/.surf/bookmarks", \
+  winid, NULL } }
 
 #define MODKEY GDK_CONTROL_MASK
 
@@ -136,4 +143,11 @@ static Button buttons[] = {
     { ClkLink,              MODKEY,     1,      linkopen,       { 0 } },
     { ClkAny,               0,          8,      navigate,       { .i = -1 } },
     { ClkAny,               0,          9,      navigate,       { .i = +1 } },
+};
+
+static SearchEngine searchengines[] = {
+  { "g",        "http://www.google.de/search?q=%s"   },
+  { "en",       "http://dict.cc/?s=%s" },
+  { "ug",       "http://%s.uni-goettingen.de" },
+  { "dict",     "http://www.thefreedictionary.com/%s" },
 };
