@@ -52,8 +52,8 @@ static Bool allowgeolocation      = TRUE;
 	} \
 }
 
-/* DOWNLOAD(URI, referer) */
-#define DOWNLOAD(d, r) { \
+/* DOWNLOAD
+#define (d, r) { \
 	.v = (char *[]){ "/bin/sh", "-c", \
 		"terminator -e  \"curl -L -J -O --user-agent '$1'" \
 		" --referer '$2' -b $3 -c $3 '$0';" \
@@ -61,6 +61,18 @@ static Bool allowgeolocation      = TRUE;
 		d, useragent, r, cookiefile, NULL \
 	} \
 }
+*/
+
+/* DOWNLOAD(URI, referer) */
+#define DOWNLOAD(d, r) { \
+    .v = (char *[]){ "/bin/sh", "-c", \
+        "terminator -e \"aria2c -U '$1'" \
+        " --referer '$2' --load-cookies $3 --save-cookies $3 '$0';" \
+        " read;\"", \
+        d, useragent, r, cookiefile, NULL \
+    } \
+}
+
 
 /* PLUMB(URI) */
 /* This called when some URI which does not begin with "about:",
